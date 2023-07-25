@@ -35,7 +35,13 @@ app.get('/info', (request, response) => {
   const size = entries.length;
   response.send(`<p>Phonebook has info for ${size} people</p>
     <p>${now}</p>`);
-})
+});
+
+app.get('/api/persons/:id', (request, response) => {
+  const entry = entries.find(entry => entry.id === Number(request.params.id));
+
+  entry ? response.json(entry) : response.status(404).end();
+});
 
 const PORT = 3001;
 app.listen(PORT, () => {
