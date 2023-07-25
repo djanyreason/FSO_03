@@ -5,3 +5,12 @@ DELETE http://localhost:3001/api/persons/1
 
 ###
 DELETE http://localhost:3001/api/persons/5
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Jay Quellan",
+  "number": "123-4-5-6789-10-11-12"
+}

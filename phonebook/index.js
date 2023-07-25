@@ -47,7 +47,23 @@ app.delete('/api/persons/:id', (request, response) => {
   entries = entries.filter(entry => entry.id !== Number(request.params.id));
 
   response.status(204).end();
-})
+});
+
+app.post('/api/persons', (request, response) => {
+  if(!request.body.name || !request.body.number) {
+    return response.status(400).json({error: 'content missing'});
+  }
+
+  const entry = {
+    name: request.body.name,
+    number: request.body.number,
+    id: Math.floor((Math.random() * 1000000) + 1)
+  };
+
+  entries = entries.concat(entry);
+
+  response.json(entry);
+});
 
 const PORT = 3001;
 app.listen(PORT, () => {
