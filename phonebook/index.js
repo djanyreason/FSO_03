@@ -54,6 +54,12 @@ app.post('/api/persons', (request, response) => {
     return response.status(400).json({error: 'content missing'});
   }
 
+  if(entries.reduce(((check, entry) => 
+    entry.name.toLowerCase() === request.body.name.toLowerCase() ?
+    true : check), false)) {
+      return response.status(400).json({error: 'name must be unique'});
+  }
+
   const entry = {
     name: request.body.name,
     number: request.body.number,
