@@ -1,8 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 
 const app = express();
+const Entry = require('./models/entry');
 
 app.use(express.json());
 app.use(express.static('build'));
@@ -14,33 +16,13 @@ morgan.token('postData', (req, res) => {
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :postData'));
 
-let entries = [
-  {
-    "name": "Aaron Donefuckedupnow",
-    "number": "040-123456",
-    "id": 1
-  },
-  {
-    "name": "Buh La'Kay",
-    "number": "39-44-5323523",
-    "id": 2
-  },
-  {
-    "name": "Dee Nice",
-    "number": "12-43-234345",
-    "id": 3
-  },
-  {
-    "name": "Jay Quellan",
-    "number": "39-23-6423122",
-    "id": 4
-  }
-];
-
 app.get('/api/persons', (request, response) => {
-  response.json(entries);
+  Entry.find({})
+    .then(notes => {
+      response.json(notes);
+    });
 });
-
+/*
 app.get('/info', (request, response) => {
   const now = Date();
   const size = entries.length;
@@ -80,7 +62,7 @@ app.post('/api/persons', (request, response) => {
   entries = entries.concat(entry);
 
   response.json(entry);
-});
+});*/
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
