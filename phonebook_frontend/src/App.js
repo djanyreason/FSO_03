@@ -68,6 +68,12 @@ const App = () => {
             color: 'green',
             content: `Added ${newName}`
           });
+        })
+        .catch(error => {
+          handleMessage({
+            color: 'red',
+            content: error.response.data.error
+          });
         });
       return true;
     }
