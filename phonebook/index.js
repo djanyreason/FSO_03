@@ -6,9 +6,9 @@ const cors = require('cors');
 const app = express();
 const Entry = require('./models/entry');
 
+app.use(cors());
 app.use(express.json());
 app.use(express.static('build'));
-app.use(cors());
 
 morgan.token('postData', (req, res) => {
   return req.method === "POST" ? JSON.stringify(req.body) : " ";
@@ -34,13 +34,13 @@ app.get('/api/persons/:id', (request, response) => {
   const entry = entries.find(entry => entry.id === Number(request.params.id));
 
   entry ? response.json(entry) : response.status(404).end();
-});
+});*/
 
 app.delete('/api/persons/:id', (request, response) => {
-  entries = entries.filter(entry => entry.id !== Number(request.params.id));
-
-  response.status(204).end();
-});*/
+  Entry.findByIdAndRemove(request.params.id)
+    .then(result => response.status(204).end())
+    .catch(error => response.status(400).send({error: 'malformatted id'}));
+});
 
 app.post('/api/persons', (request, response) => {
   if(!request.body.name || !request.body.number) {
