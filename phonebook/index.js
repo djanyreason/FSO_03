@@ -78,6 +78,19 @@ app.post('/api/persons', (request, response) => {
   });
 });
 
+app.put('/api/persons/:id', (request, response, next) => {
+  const update = {
+    name: request.body.name, 
+    number: request.body.number 
+  };
+
+  Entry.findByIdAndUpdate(request.params.id, update, {new: true})
+    .then(updatedEntry => {
+      response.json(updatedEntry);
+    })
+    .catch(error => next(error));
+});
+
 app.use(unknownEndpoint);
 app.use(errorHandler);
 
