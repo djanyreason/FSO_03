@@ -36,19 +36,30 @@ app.get('/api/persons', (request, response) => {
       response.json(notes);
     });
 });
-/*
+
 app.get('/info', (request, response) => {
   const now = Date();
-  const size = entries.length;
-  response.send(`<p>Phonebook has info for ${size} people</p>
-    <p>${now}</p>`);
+  Entry.find({})
+    .then(notes => {
+      const size = notes.length;
+      response.send(`<p>Phonebook has info for ${size} people</p>
+      <p>${now}</p>`);
+    });
 });
 
-app.get('/api/persons/:id', (request, response) => {
-  const entry = entries.find(entry => entry.id === Number(request.params.id));
-
-  entry ? response.json(entry) : response.status(404).end();
-});*/
+app.get('/api/persons/:id', (request, response, next) => {
+  Entry.findById(request.params.id)
+    .then(entry => {
+      if(entry) {
+        response.json(entry);
+      } else {
+        response.status(404).end();
+      }
+    })
+    .catch(error => {
+      next(error);
+    });
+});
 
 app.delete('/api/persons/:id', (request, response) => {
   Entry.findByIdAndRemove(request.params.id)
