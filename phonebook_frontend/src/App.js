@@ -54,6 +54,12 @@ const App = () => {
                 color: 'green',
                 content: `Updated number for ${newName}`
               });
+            })
+            .catch(error => {
+              handleMessage({
+                color: 'red',
+                content: error.response.data.error
+              })
             });
           return true;
         } else {
@@ -77,7 +83,7 @@ const App = () => {
         });
       return true;
     }
-  };
+  }; 
 
   const removePerson = (entry) => {
     if(window.confirm(`Delete ${entry.name}?`)) {

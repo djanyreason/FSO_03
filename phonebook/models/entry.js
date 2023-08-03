@@ -15,8 +15,40 @@ mongoose.connect(url)
   });
 
 const entrySchema = new mongoose.Schema({
-    name: String,
-    number: String,
+    name: {
+      type: String,
+      minLength: 3,
+      required: true
+    },
+    number: {
+      type: String,
+      validate: [
+        {
+          validator: (theNumber) => {
+            return theNumber.length >= 8;
+          },
+          message: reject => `Phone number ${reject.value} is too short, minimum size is 8 characters`
+        },
+        {
+          validator: (theNumber) => {
+            const dash = theNumber.search('-');
+
+            const checkStr = (str) => {
+              return str.split('').reduce((check, digit) => 
+                (check && ((1 + parseInt(digit)) ? true : false)), true)
+            }
+
+            return dash >= 2 &&
+              dash <= 3 &&
+              checkStr(theNumber.substring(0,dash)) &&
+              checkStr(theNumber.substring(dash+1,theNumber.length));
+
+          },
+          message: reject => `Phone number ${reject.value} is not correctly formatted`
+        }
+      ],
+      required: true
+    }
 });
 
 entrySchema.set('toJSON', {

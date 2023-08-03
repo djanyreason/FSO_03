@@ -15,6 +15,8 @@ const errorHandler = (error, request, response, next) => {
 
   if(error.name === 'CastError') {
     return response.status(400).send({error: 'malformatted id'});
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message });
   }
 
   next(error);
@@ -67,11 +69,7 @@ app.delete('/api/persons/:id', (request, response) => {
     .catch(error => response.status(400).send({error: 'malformatted id'}));
 });
 
-app.post('/api/persons', (request, response) => {
-  if(!request.body.name || !request.body.number) {
-    return response.status(400).json({error: 'content missing'});
-  }
-
+app.post('/api/persons', (request, response, next) => {
   /*if(entries.reduce(((check, entry) => 
     entry.name.toLowerCase() === request.body.name.toLowerCase() ?
     true : check), false)) {
@@ -84,9 +82,8 @@ app.post('/api/persons', (request, response) => {
   });
 
   entry.save()
-    .then(newEntry => {
-      response.json(entry);
-  });
+    .then(newEntry => response.json(entry))
+    .catch(error => next(error));
 });
 
 app.put('/api/persons/:id', (request, response, next) => {
@@ -95,7 +92,8 @@ app.put('/api/persons/:id', (request, response, next) => {
     number: request.body.number 
   };
 
-  Entry.findByIdAndUpdate(request.params.id, update, {new: true})
+  Entry.findByIdAndUpdate(request.params.id, update, 
+    {new: true, runValidators: true, context: 'query'})
     .then(updatedEntry => {
       response.json(updatedEntry);
     })
