@@ -12,6 +12,7 @@
 /build
 
 # REST requests
+requests/
 
 # misc
 .DS_Store
@@ -20,7 +21,6 @@
 .env.test.local
 .env.production.local
 .env
-requests/
 
 npm-debug.log*
 yarn-debug.log*
