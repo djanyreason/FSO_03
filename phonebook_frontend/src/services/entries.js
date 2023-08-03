@@ -26,9 +26,11 @@ const update = (id, newObject) => {
     .then(response => response.data);
 };
 
-export default { 
+const phonebookService = { 
   getAll, 
   create, 
   remove,
   update
 };
+
+export default phonebookService

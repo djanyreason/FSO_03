@@ -10,7 +10,8 @@
     "build:ui": "rm -rf build && cd ../phonebook_frontend && npm run build && cp -r build ../phonebook",
     "deploy": "fly deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
-    "logs:prod": "fly logs"
+    "logs:prod": "fly logs",
+    "lint": "eslint ."
   },
   "author": "John F. Anderson",
   "license": "ISC",

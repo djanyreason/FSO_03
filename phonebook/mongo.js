@@ -26,7 +26,7 @@ if(process.argv.length === 3) {
     .then(result => {
       result.forEach(entry => {
         console.log(`${entry.name} ${entry.number}`);
-      })
+      });
       mongoose.connection.close();
     });
 } else if (process.argv.length === 5) {
@@ -39,6 +39,6 @@ if(process.argv.length === 3) {
     mongoose.connection.close();
   });
 } else {
-  console.log("Incorrect number of arguments");
+  console.log('Incorrect number of arguments');
   mongoose.connection.close();
 }
